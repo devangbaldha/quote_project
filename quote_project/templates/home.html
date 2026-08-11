@@ -1,0 +1,70 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quote of the Day</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+
+<main class="container">
+    <h1>🌟 Quote</h1>
+
+    <section class="quote-block">
+        {% if quote %}
+            <blockquote class="quote-text">
+                "{{ quote.quote }}"
+            </blockquote>
+            <p class="quote-author">
+                — {{ quote.author }}
+            </p>
+        {% else %}
+            <p class="quote-text">
+                No Quote Available
+            </p>
+        {% endif %}
+    </section>
+
+    <div class="timer-container">
+        <span>Next quote in</span>
+        <span id="timer">60</span>
+        <span>seconds</span>
+    </div>
+</main>
+
+<script>
+    const timerElement = document.getElementById("timer");
+
+    // Configured for 1 Minute (60 seconds)
+    const INTERVAL_SECONDS = 60; 
+    const OFFSET_SECONDS = 5; // 5-second buffer for cron job execution
+
+    function updateTimer() {
+        const now = new Date();
+        const seconds = now.getSeconds();
+
+        // Calculate exact seconds remaining until second :05 of the next minute
+        let timeLeft = OFFSET_SECONDS - seconds;
+        if (timeLeft <= 0) {
+            timeLeft += INTERVAL_SECONDS;
+        }
+
+        timerElement.textContent = timeLeft;
+
+        // Reload page at second :05
+        if (seconds === OFFSET_SECONDS) {
+            window.location.reload();
+        }
+    }
+
+    // Run immediately on page load
+    updateTimer();
+
+    // Update every second
+    setInterval(updateTimer, 1000);
+</script>
+
+</body>
+</html>
