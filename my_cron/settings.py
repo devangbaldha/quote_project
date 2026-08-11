@@ -13,7 +13,6 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 import os
 from pathlib import Path
 from dotenv import load_dotenv
-
 import dj_database_url
 
 load_dotenv()
@@ -34,8 +33,8 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-# os.environ.get("DEBUG", "False") == "True"
+DEBUG = os.environ.get("DEBUG", "False").lower == "true"
+
 ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS").split(",")
 
 
@@ -86,16 +85,6 @@ WSGI_APPLICATION = "my_cron.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.postgresql",
-#         "NAME": os.environ.get("NAME"),
-#         "USER": "postgres",
-#         "PASSWORD": os.environ.get("PASSWORD"),
-#         "HOST": os.environ.get("HOST"),
-#         "PORT": os.environ.get("PORT"),
-#     }
-# }
 
 DATABASES = {
     "default": dj_database_url.config(
